@@ -14,30 +14,24 @@ Asegúrate de tener instalado en tu sistema:
 1. Abre tu terminal y sitúate en la carpeta raíz del proyecto `python`:
 ```bash
 cd python
-
 ```
-
 
 2. Crea un entorno virtual dentro de la carpeta:
 ```bash
 python -m venv venv
-
 ```
-
 
 3. Activa el entorno virtual:
 * **En Windows (CMD / PowerShell):**
 ```bash
 venv\Scripts\activate
-
 ```
-
 
 * **En macOS / Linux:**
 ```bash
 source venv/bin/activate
-
 ```
+
 ## 2. Instalación de Dependencias
 
 Una vez activado el entorno virtual, instala las librerías necesarias ejecutando:
@@ -45,6 +39,7 @@ Una vez activado el entorno virtual, instala las librerías necesarias ejecutand
 ```bash
 pip install -r requirements.txt
 ```
+
 ## 3. Configuración de Variables de Entorno
 
 Crea un archivo `.env` en la carpeta raíz del proyecto. Copia el archivo `.env copy` que encontrarás en dicha carpeta, y rellena los datos como se indica abajo
@@ -75,11 +70,54 @@ Para iniciar el servidor de desarrollo mediante **Uvicorn**, ejecuta el siguient
 
 ```bash
 uvicorn app.main:app
-
 ```
+
 ## 5. Verificación del Funcionamiento
 
 Una vez iniciado el servidor, podrás comprobar que todo funciona correctamente abriendo tu navegador web e ingresando a las siguientes rutas:
 
 * **Documentación interactiva (Swagger UI):**
-[http://127.0.0.1:8000/docs](https://www.google.com/search?q=http://127.0.0.1:8000/docs)
+[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+## 6. Ejecución de Tests y Pruebas
+
+El proyecto cuenta con una suite de pruebas dividida en pruebas unitarias, de extremo a extremo (E2E) y no funcionales. Para ejecutarlas correctamente, asegúrate de activar primero tu entorno virtual y situarte en la carpeta raíz:
+
+```bash
+# Activa tu entorno virtual (si no lo tienes activo)
+# Windows: venv\Scripts\activate | macOS/Linux: source venv/bin/activate
+```
+
+### 1. Pruebas Unitarias
+
+* **Ejecución:**
+
+```bash
+pytest tests/unit/
+```
+
+### 2. Pruebas End-to-End (E2E)
+
+* **Ejecución:**
+
+```bash
+python tests/end-to-end/test_postman.py
+```
+
+### 3. Pruebas No Funcionales
+
+* **Pruebas de carga y estrés:**
+
+Para ejecutar las simulaciones de tráfico concurrente, láncese el siguiente comando apuntando al archivo de configuración:
+
+```bash
+locust -f tests/non-functional/locustfile.py
+```
+
+Una vez ejecutado, ábrase el navegador e ingrésese a [http://localhost:8089](http://localhost:8089) para configurar el número de usuarios concurrentes y la tasa de peticiones desde la interfaz gráfica de Locust.
+
+* **Resto de pruebas no funcionales:**
+
+```bash
+pytest tests/non-functional/tests_non_functional
+```
