@@ -1,0 +1,1989 @@
+{
+  "info": {
+    "_postman_id": "c566ee15-b19a-4a3f-9a9c-8de0937204a3",
+    "name": "TEST_SIPAM_API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33743602"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Get Token OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "function guardarBearerToken() {\r",
+                  "    try {\r",
+                  "        var jsonData = pm.response.json();\r",
+                  "        \r",
+                  "        // En tu OpenAPI el campo es 'access_token'\r",
+                  "        if (jsonData && jsonData.access_token) {\r",
+                  "            pm.collectionVariables.set(\"bearer_token\", jsonData.access_token);\r",
+                  "            console.log(\"🟢 Bearer token guardado con éxito en {{bearer_token}}\");\r",
+                  "        } else {\r",
+                  "            console.error(\"❌ No se encontró la propiedad 'access_token' en la respuesta\");\r",
+                  "        }\r",
+                  "    } catch (error) {\r",
+                  "        console.error(\"❌ Error al parsear el JSON de la respuesta:\", error);\r",
+                  "    }\r",
+                  "}\r",
+                  "\r",
+                  "guardarBearerToken()\r",
+                  "\r",
+                  "pm.test(\"Status code es 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve el access_token y tipo 'bearer'\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"access_token\");\r",
+                  "    pm.expect(jsonData.access_token).to.be.a(\"string\");\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"token_type\");\r",
+                  "    pm.expect(jsonData.token_type.toLowerCase()).to.eql(\"bearer\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "medico1@sipam.es",
+                  "type": "text",
+                  "uuid": "c734f9b9-1c36-4fae-ae5d-b0ee74e183d8"
+                },
+                {
+                  "key": "password",
+                  "value": "1234567890",
+                  "type": "text",
+                  "uuid": "b86e2068-818d-45ec-8386-78a71ceec5ef"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Token 401 contraseña errónea",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve mensaje de detalle de credenciales incorrectas\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.be.a('string');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "medico1@sipam.es",
+                  "type": "text",
+                  "uuid": "c734f9b9-1c36-4fae-ae5d-b0ee74e183d8"
+                },
+                {
+                  "key": "password",
+                  "value": "contraseñaIncorrecta",
+                  "type": "text",
+                  "uuid": "b86e2068-818d-45ec-8386-78a71ceec5ef"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Token 401 email inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve mensaje de detalle de credenciales incorrectas\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.be.a('string');\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "medico@sipam.es",
+                  "type": "text",
+                  "uuid": "c734f9b9-1c36-4fae-ae5d-b0ee74e183d8"
+                },
+                {
+                  "key": "password",
+                  "value": "contraseña",
+                  "type": "text",
+                  "uuid": "b86e2068-818d-45ec-8386-78a71ceec5ef"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Token 422 campos incorrectos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 422 Unprocessable Entity por formato incorrecto\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Indica error en el formato del cuerpo de la petición\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "medico1@sipam.es",
+                  "type": "text",
+                  "uuid": "c734f9b9-1c36-4fae-ae5d-b0ee74e183d8"
+                },
+                {
+                  "key": "password",
+                  "value": "contraseña",
+                  "type": "text",
+                  "uuid": "b86e2068-818d-45ec-8386-78a71ceec5ef"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Token 422 formato incorrecto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 422 Unprocessable Entity por formato incorrecto\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Indica error en el formato del cuerpo de la petición\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"medico1@sipam.es\",\r\n    \"password\": 1234567890\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/auth/token",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "post patients",
+      "item": [
+        {
+          "name": "Post Patient full body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "function guardarPaciente1Id() {\r",
+                  "    try {\r",
+                  "        var jsonData = pm.response.json();\r",
+                  "        var idObtenido = jsonData.patient_id || jsonData.id;\r",
+                  "        if (idObtenido) {\r",
+                  "            pm.collectionVariables.set(\"paciente1_id\", idObtenido);\r",
+                  "            console.log(\"🟢 ID de paciente guardado en Globals:\", idObtenido);\r",
+                  "        }\r",
+                  "    } catch (e) {\r",
+                  "        console.error(e);\r",
+                  "    }\r",
+                  "}\r",
+                  "\r",
+                  "guardarPaciente1Id()\r",
+                  "\r",
+                  "pm.test(\"Status code es 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve el paciente creado con su ID generado\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"patient_id\");\r",
+                  "    pm.expect(jsonData.patient_id).to.be.a(\"string\");\r",
+                  "    pm.expect(jsonData.patient_id).to.match(/^PAC-/);\r",
+                  "\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"birth_date\": \"1980-05-15\",\r\n  \"gender\": \"M\",\r\n  \"mobility\": 2,\r\n  \"admission_type\": \"ED\",\r\n  \"comorbidity\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Patient min body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "function guardarPaciente2Id() {\r",
+                  "    try {\r",
+                  "        var jsonData = pm.response.json();\r",
+                  "        var idObtenido = jsonData.patient_id || jsonData.id;\r",
+                  "        if (idObtenido) {\r",
+                  "            pm.collectionVariables.set(\"paciente2_id\", idObtenido);\r",
+                  "            console.log(\"🟢 ID de paciente guardado en Globals:\", idObtenido);\r",
+                  "        }\r",
+                  "    } catch (e) {\r",
+                  "        console.error(e);\r",
+                  "    }\r",
+                  "}\r",
+                  "\r",
+                  "guardarPaciente2Id()\r",
+                  "\r",
+                  "pm.test(\"Status code es 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve el paciente creado con su ID generado\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"patient_id\");\r",
+                  "    pm.expect(jsonData.patient_id).to.be.a(\"string\");\r",
+                  "    pm.expect(jsonData.patient_id).to.match(/^PAC-/);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"birth_date\": \"1976-02-29\",\r\n  \"gender\": \"F\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Patient 401 sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized sin Token\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no hay autenticación\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.equal(\"Not authenticated\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"birth_date\": \"1980-05-15\",\r\n  \"gender\": \"M\",\r\n  \"mobility\": 2,\r\n  \"admission_type\": \"ED\",\r\n  \"comorbidity\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Patient 422 campos obligatorios no incluidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 422 por falta de campos obligatorios\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla los campos faltantes\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "\r",
+                  "    var hasRequiredFieldsError = jsonData.detail.some(\r",
+                  "        err => err.loc.includes(\"birth_date\") || err.loc.includes(\"gender\")\r",
+                  "    );\r",
+                  "    pm.expect(hasRequiredFieldsError).to.be.true;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mobility\": 2,\r\n  \"admission_type\": \"ED\",\r\n  \"comorbidity\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "post prediction",
+      "item": [
+        {
+          "name": "Post Prediction full body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve la predicción generada con su estado de alerta\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"patient_id\");\r",
+                  "    pm.expect(jsonData.patient_id).to.eql(pm.collectionVariables.get(\"paciente1_id\"));\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"alert\");\r",
+                  "    pm.expect(jsonData.alert).to.be.a(\"boolean\");\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"timestamp\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"history_updated\");\r",
+                  "    pm.expect(jsonData.history_updated).to.be.true;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"patient_id\": \"{{paciente1_id}}\",\r\n  \"heart_rate\": 110.03,\r\n  \"respiratory_rate\": 16.33,\r\n  \"spo2\": 91.07,\r\n  \"temperature\": 36.96,\r\n  \"systolic_bp\": 95.05,\r\n  \"diastolic_bp\": 64.46,\r\n  \"oxygen_device\": \"none\",\r\n  \"oxygen_flow\": 0.0,\r\n  \"nurse_alert\": true,\r\n  \"wbc_count\": 5.55,\r\n  \"lactate\": 3.21,\r\n  \"creatinine\": 2.31,\r\n  \"crp\": 42.31,\r\n  \"hemoglobin\": 12.31,\r\n  \"sepsis_risk\": 0.31\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Prediction min body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 201 Created\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve el paciente creado con su ID generado\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"patient_id\");\r",
+                  "    pm.expect(jsonData.patient_id).to.be.a(\"string\");\r",
+                  "    pm.expect(jsonData.patient_id).to.match(/^PAC-/);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve la predicción generada con su estado de alerta\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"patient_id\");\r",
+                  "    pm.expect(jsonData.patient_id).to.eql(\"PAC-12345678\");\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"alert\");\r",
+                  "    pm.expect(jsonData.alert).to.be.a(\"boolean\");\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.have.property(\"timestamp\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"history_updated\");\r",
+                  "    pm.expect(jsonData.history_updated).to.be.true;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"patient_id\": \"PAC-12345678\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Prediction 401 sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized sin Token\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no hay autenticación\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.equal(\"Not authenticated\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"patient_id\": \"{{paciente1_id}}\",\r\n  \"heart_rate\": 110.03,\r\n  \"respiratory_rate\": 16.33,\r\n  \"spo2\": 91.07,\r\n  \"temperature\": 36.96,\r\n  \"systolic_bp\": 95.05,\r\n  \"diastolic_bp\": 64.46,\r\n  \"oxygen_device\": \"none\",\r\n  \"oxygen_flow\": 0.0,\r\n  \"nurse_alert\": true,\r\n  \"wbc_count\": 5.55,\r\n  \"lactate\": 3.21,\r\n  \"creatinine\": 2.31,\r\n  \"crp\": 42.31,\r\n  \"hemoglobin\": 12.31,\r\n  \"sepsis_risk\": 0.31\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Prediction 409 paciente dado de alta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 409 Conflict\", function () {\r",
+                  "    pm.response.to.have.status(409);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"patient_id\": \"PAC-AABBCCDD\",\r\n  \"heart_rate\": 110.03,\r\n  \"respiratory_rate\": 16.33,\r\n  \"spo2\": 91.07,\r\n  \"temperature\": 36.96,\r\n  \"systolic_bp\": 95.05,\r\n  \"diastolic_bp\": 64.46,\r\n  \"oxygen_device\": \"none\",\r\n  \"oxygen_flow\": 0.0,\r\n  \"nurse_alert\": true,\r\n  \"wbc_count\": 5.55,\r\n  \"lactate\": 3.21,\r\n  \"creatinine\": 2.31,\r\n  \"crp\": 42.31,\r\n  \"hemoglobin\": 12.31,\r\n  \"sepsis_risk\": 0.31\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Prediction 422 campos obligatorios no incluidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 422 por falta de campos obligatorios\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla los campos faltantes\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "\r",
+                  "    var hasRequiredFieldsError = jsonData.detail.some(\r",
+                  "        err => err.loc.includes(\"patient_id\")\r",
+                  "    );\r",
+                  "    pm.expect(hasRequiredFieldsError).to.be.true;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"heart_rate\": 110.03,\r\n  \"respiratory_rate\": 16.33,\r\n  \"spo2\": 91.07,\r\n  \"temperature\": 36.96,\r\n  \"systolic_bp\": 95.05,\r\n  \"diastolic_bp\": 64.46,\r\n  \"oxygen_device\": \"none\",\r\n  \"oxygen_flow\": 0.0,\r\n  \"nurse_alert\": true,\r\n  \"wbc_count\": 5.55,\r\n  \"lactate\": 3.21,\r\n  \"creatinine\": 2.31,\r\n  \"crp\": 42.31,\r\n  \"hemoglobin\": 12.31,\r\n  \"sepsis_risk\": 0.31\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "get patients",
+      "item": [
+        {
+          "name": "Get Patient History normal OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve un array con el histórico del paciente y estructura correcta\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.length).to.equal(1);\r",
+                  "\r",
+                  "    var primerRegistro = jsonData[0];\r",
+                  "    \r",
+                  "    pm.expect(primerRegistro).to.have.property(\"timestamp\");\r",
+                  "    pm.expect(primerRegistro).to.have.property(\"alert\");\r",
+                  "    pm.expect(primerRegistro).to.have.property(\"data\");\r",
+                  "    \r",
+                  "    pm.expect(primerRegistro.data).to.have.property('admission_time');\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient History vacío OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 200 OK\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Devuelve un array vacío\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    \r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.length).to.equal(0);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente2_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente2_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient 401 History sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized sin Token\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no hay autenticación\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.equal(\"Not authenticated\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"birth_date\": \"1980-05-15\",\r\n  \"gender\": \"M\",\r\n  \"mobility\": 2,\r\n  \"admission_type\": \"ED\",\r\n  \"comorbidity\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient History 404 paciente no encontrado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no se encontró el paciente\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.match(/PAC-00000000/);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/PAC-00000000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "PAC-00000000"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "put prediction",
+      "item": [
+        {
+          "name": "Put Prediction full body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 204 No Content\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"outcome\": false,\r\n  \"comments\": \"El paciente se recuperó correctamente.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Prediction min body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 204 No Content\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"outcome\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction/PAC-12345678",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction",
+                "PAC-12345678"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Prediction 401 sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized sin Token\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no hay autenticación\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.equal(\"Not authenticated\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"outcome\": false,\r\n  \"comments\": \"El paciente se recuperó correctamente.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Prediction 404 paciente no encontrado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no se encontró el paciente\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.match(/PAC-00000000/);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"outcome\": false,\r\n  \"comments\": \"El paciente se recuperó correctamente.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction/PAC-00000000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction",
+                "PAC-00000000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Prediction 422 campos con datos inválidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 422 por campos con datos inválidos\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla los campos inválidos\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "\r",
+                  "    var hasRequiredFieldsError = jsonData.detail.some(\r",
+                  "        err => err.loc.includes(\"outcome\")\r",
+                  "    );\r",
+                  "    pm.expect(hasRequiredFieldsError).to.be.true;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"outcome\": 33,\r\n  \"comments\": \"El paciente murió a las 33 horas\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/prediction/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "prediction",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "put patients",
+      "item": [
+        {
+          "name": "Put Patients full body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 204 No Content\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mobility\": 3,\r\n  \"comorbidity\": 7,\r\n  \"admission\": \"Elective\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Patients min body OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 204 No Content\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/PAC-12345678",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "PAC-12345678"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Patients 401 sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized sin Token\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no hay autenticación\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.equal(\"Not authenticated\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mobility\": 3,\r\n  \"comorbidity\": 7,\r\n  \"admission\": \"Elective\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Patients 404 paciente no encontrado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no se encontró el paciente\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.match(/PAC-00000000/);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mobility\": 3,\r\n  \"comorbidity\": 7,\r\n  \"admission\": \"Elective\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/PAC-00000000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "PAC-00000000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put Patients 422 campos con datos inválidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 422 por campos con datos inválidos\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla los campos inválidos\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "\r",
+                  "    var hasRequiredFieldsError = jsonData.detail.some(\r",
+                  "        err => err.loc.includes(\"mobility\")\r",
+                  "    );\r",
+                  "    pm.expect(hasRequiredFieldsError).to.be.true;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"mobility\": -6,\r\n  \"comorbidity\": 7,\r\n  \"admission\": \"Elective\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "patch patients",
+      "item": [
+        {
+          "name": "Patch Patients OK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 204 No Content\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Patch Patients 401 sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 401 Unauthorized sin Token\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no hay autenticación\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.equal(\"Not authenticated\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/{{paciente1_id}}",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{paciente1_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Patch Patients 404 paciente no encontrado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 404 Not Found\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"El cuerpo detalla que no se encontró el paciente\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"detail\");\r",
+                  "    pm.expect(jsonData.detail).to.match(/PAC-00000000/);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/PAC-00000000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "PAC-00000000"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Patch Patients 409 paciente dado de alta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code es 409 Conflict\", function () {\r",
+                  "    pm.response.to.have.status(409);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8000/api/v1/patients/PAC-AABBCCDD",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "PAC-AABBCCDD"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token",
+      "value": ""
+    },
+    {
+      "key": "paciente1_id",
+      "value": ""
+    },
+    {
+      "key": "paciente2_id",
+      "value": ""
+    }
+  ]
+}

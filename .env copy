@@ -1,0 +1,15 @@
+PROJECT_NAME="SIPAM - API REST"
+VERSION="1.0.0"
+ENTORNO="" # BASE/TEST
+API_V1_STR="/api/v1"
+
+# Base de datos
+POSTGRES_SERVER= "" # aws-0-eu-central-1.pooler.supabase.com
+SUPABASE_URL= "" # https://bjhhuypjszwljkwlxony.supabase.co
+POSTGRES_ANON_KEY= ""
+POSTGRES_PORT= 0 # 6543
+POSTGRES_USER= ""
+POSTGRES_PASSWORD= ""
+POSTGRES_DB="" # postgres
+SUPABASE_JWT_SECRET=""
+ALGORITHM="" #ES256

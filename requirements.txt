@@ -1,0 +1,31 @@
+# --- Análisis de Datos y Machine Learning ---
+pandas
+numpy
+scikit-learn
+xgboost
+lightgbm
+matplotlib
+seaborn
+jupyter
+
+# --- Supabase ---
+supabase
+
+# --- Backend y API REST ---
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv>=1.0.1
+sqlalchemy>=2.0.28
+psycopg2-binary>=2.9.9
+alembic>=1.13.1
+python-multipart>=0.0.9
+
+# --- Utilidades y Pruebas ---
+requests
+pytest
+pytest-cov
+openapi-spec-validator
+locust
+bandit

@@ -1,0 +1,22 @@
+{
+    "variables_a_escalar": [
+        "hour_from_admission",
+        "heart_rate",
+        "respiratory_rate",
+        "spo2_pct",
+        "temperature_c",
+        "systolic_bp",
+        "diastolic_bp",
+        "oxygen_flow",
+        "mobility_score",
+        "wbc_count",
+        "lactate",
+        "creatinine",
+        "crp_level",
+        "hemoglobin",
+        "sepsis_risk_score",
+        "age",
+        "comorbidity_index"
+    ],
+    "peso_desbalanceo": 17.49864978529373
+}
