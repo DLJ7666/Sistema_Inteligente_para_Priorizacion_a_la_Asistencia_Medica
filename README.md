@@ -44,9 +44,32 @@ Una vez activado el entorno virtual, instala las librerías necesarias ejecutand
 
 ```bash
 pip install -r requirements.txt
-
 ```
-## 3. Lanzamiento de la Aplicación
+## 3. Configuración de Variables de Entorno
+
+Crea un archivo `.env` en la carpeta raíz del proyecto. Copia el archivo `.env copy` que encontrarás en dicha carpeta, y rellena los datos como se indica abajo
+
+```env
+PROJECT_NAME="SIPAM - API REST"
+VERSION="1.0.0"
+ENTORNO="" # "BASE" para producción/desarrollo, o "TEST" para pruebas
+API_V1_STR="/api/v1"
+
+# --- Conexión PostgreSQL / Supabase ---
+POSTGRES_SERVER= # Servidor donde se ejecute la base de datos
+SUPABASE_URL= # URL del servidor de Supabase
+POSTGRES_ANON_KEY= # Clave anónima de Supabase
+POSTGRES_PORT= # Puerto de escucha de la base de datos 
+POSTGRES_USER= # Usuario de la base de datos
+POSTGRES_PASSWORD= # Contraseña del usuario de la base de datos 
+POSTGRES_DB= # Nombre de la base de datos
+
+# --- Seguridad JWT ---
+SUPABASE_JWT_SECRET= Clave de validación de usuarios JWT de Supabase
+ALGORITHM="ES256"
+```
+
+## 4. Lanzamiento de la Aplicación
 
 Para iniciar el servidor de desarrollo mediante **Uvicorn**, ejecuta el siguiente comando desde la carpeta raiz del proyecto:
 
@@ -54,7 +77,7 @@ Para iniciar el servidor de desarrollo mediante **Uvicorn**, ejecuta el siguient
 uvicorn app.main:app
 
 ```
-## 4. Verificación del Funcionamiento
+## 5. Verificación del Funcionamiento
 
 Una vez iniciado el servidor, podrás comprobar que todo funciona correctamente abriendo tu navegador web e ingresando a las siguientes rutas:
 
